@@ -33,6 +33,12 @@
           }
           if (res.body.success) {
             token = res.body.token;
+            superagent
+              .get('/test')
+              .set({'Authorization': token})
+              .end(function(err, res) {
+                console.log(res.body);
+              })
           } else {
             alert("Your username or password does not match.");
           }

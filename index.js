@@ -15,6 +15,22 @@ express()
           success: token ? true : false
         })
       })
+      .use(function(req, res, next) {
+        var token = req.headers.authorization;
+        console.log (token);
+        if (authenticate(token)) {
+          next();
+        } else {
+          res.status(401).json({
+            succes: false
+          });
+        }
+      })
+      .get('/test', function (req, res) {
+        res.json({
+          success: true
+        })
+      })
       .listen(8000);
 
 function signin (username, password) {
@@ -26,5 +42,13 @@ function signin (username, password) {
     return 'token';
   } else {
     return null;
+  }
+}
+
+function authenticate (token){
+  if (token === 'token') {
+    return true;
+  } else {
+    return false;
   }
 }
